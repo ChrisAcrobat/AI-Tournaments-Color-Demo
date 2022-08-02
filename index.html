@@ -38,11 +38,11 @@
 		let nextMemberID = 0;
 		let teamWithColors = [];
 		replay.arenaResult.teams.forEach(team=>{
-			let teamWithColor = {color: ReplayHelper.getTeamColor(team), members:[]}
+			let teamWithColor = {color: team.color, members:[]}
 			teamWithColors.push(teamWithColor);
 			team.members.forEach((member, memberIndex)=>{
 				member.id = nextMemberID++;
-				teamWithColor.members.push(ReplayHelper.getMemberColor(member));
+				teamWithColor.members.push(member.color);
 			});
 		});
 
