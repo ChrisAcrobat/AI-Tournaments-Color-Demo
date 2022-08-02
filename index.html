@@ -4,15 +4,10 @@
 		location.reload();
 	});
 	let data = [];
-	let textarea = '';
 	if(!location.hash.substring(1)){
 		window.location.hash = '5,7';
 	}
 	location.hash.substring(1).split(',').forEach(num => {
-		if(textarea){
-			textarea += '\n';
-		}
-		textarea += num;
 		num = parseInt(num);
 		if(num){
 			let team = [];
@@ -22,8 +17,8 @@
 			}
 		}
 	});
-	function updateHash(textarea){
-		window.location.hash = textarea.value.trim().replaceAll('\n', ',');
+	function updateHash(input){
+		window.location.hash = input.value.replace(/[^\d,]/g, '');
 	}
 	window.addEventListener('load', event => {
 		data.forEach((d, index) => {
