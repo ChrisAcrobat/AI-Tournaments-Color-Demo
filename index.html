@@ -18,7 +18,15 @@
 		}
 	});
 	function updateHash(input){
-		window.location.hash = input.value.replace(/[^\d,]/g, '');
+		let hash = '';
+		let teams = input.valueAsNumber;
+		while(teams--){
+			if(hash!==''){
+				hash += ',';
+			}
+			hash += 1;
+		}
+		window.location.hash = hash;
 	}
 	window.addEventListener('load', event => {
 		data.forEach((d, index) => {
@@ -47,7 +55,7 @@
 		});
 
 		let teamColorWidth = [];
-		let html = '<input type="number" onchange="updateHash(this)" value="'+location.hash.substring(1)+'" autofocus></input><canvas id="canvas" width="100" height="100"></canvas><table><tr>'
+		let html = '<input type="number" onchange="updateHash(this)" min=1 value="'+(location.hash.substring(1).split(',').length)+'" autofocus></input><canvas id="canvas" width="100" height="100"></canvas><table><tr>'
 		teamWithColors.forEach((tc, teamIndex) => {
 			if(teamColorWidth.length < 2){
 				teamColorWidth.push(tc.color.hue);
@@ -66,6 +74,7 @@
 		document.body.innerHTML = html;
 		teamColorWidth = Math.abs(teamColorWidth[1]-teamColorWidth[0]);
 		var canvasContext = document.getElementById('canvas').getContext('2d');
+		let onlySingleTeams = !teamWithColors.filter(tc => 1 < tc.members.length).length;
 		canvasContext.beginPath();
 		canvasContext.arc(50, 50, 50, 0, 2*Math.PI);
 		canvasContext.stroke();
@@ -78,13 +87,15 @@
 				canvasContext.strokeStyle = member.RGB;
 				canvasContext.stroke();
 			});
-			canvasContext.beginPath();
-			canvasContext.moveTo(50, 50);
-			canvasContext.setLineDash([5]);
-			let angle = ((teamWithColors.length%2 ? 0 : teamColorWidth/2)+teamColorWidth*teamIndex)*Math.PI*2;
-			canvasContext.lineTo(50+50*Math.sin(angle), 50+50*Math.cos(angle));
-			canvasContext.strokeStyle = 'Black';
-			canvasContext.stroke();
+			if(!onlySingleTeams){
+				canvasContext.beginPath();
+				canvasContext.moveTo(50, 50);
+				canvasContext.setLineDash([5]);
+				let angle = ((teamWithColors.length%2 ? 0 : teamColorWidth/2)+teamColorWidth*teamIndex)*Math.PI*2;
+				canvasContext.lineTo(50+50*Math.sin(angle), 50+50*Math.cos(angle));
+				canvasContext.strokeStyle = 'Black';
+				canvasContext.stroke();
+			}
 		})
 	});
 </script>
