@@ -78,6 +78,7 @@
 		canvasContext.beginPath();
 		canvasContext.arc(50, 50, 50, 0, 2*Math.PI);
 		canvasContext.stroke();
+		let initialHue = teamWithColors[0].color.hue;
 		teamWithColors.forEach((tc, teamIndex) => {
 			tc.members.forEach((member, memberIndex)=>{
 				canvasContext.beginPath();
@@ -91,7 +92,7 @@
 				canvasContext.beginPath();
 				canvasContext.moveTo(50, 50);
 				canvasContext.setLineDash([5]);
-				let angle = ((teamWithColors.length%2 ? 0 : teamColorWidth/2)+teamColorWidth*teamIndex)*Math.PI*2;
+				let angle = tc.color.hue*Math.PI*2;
 				canvasContext.lineTo(50+50*Math.sin(angle), 50+50*Math.cos(angle));
 				canvasContext.strokeStyle = 'Black';
 				canvasContext.stroke();
